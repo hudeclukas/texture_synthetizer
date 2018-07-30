@@ -33,8 +33,10 @@ def mask_patch(image: np.ndarray, min_size:int, max_size:int, allow_inverse:bool
         mask = np.ones((image.shape[0], image.shape[1]), np.int32)
         mask[x_start:x_start+size, y_start:y_start+size] = np.zeros((size,size))
 
+    mean = np.abs(mask - 1) - 0.5
+    mean = mean.reshape((mean.shape[0],mean.shape[1],1))
     mask = mask.reshape((mask.shape[0],mask.shape[1],1))
-    return image * mask
+    return image * mask + mean
 
 
 class ImageObjects:
